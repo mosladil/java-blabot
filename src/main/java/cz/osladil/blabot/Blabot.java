@@ -4,7 +4,7 @@ import cz.osladil.blabot.api.BlabotMethod;
 import cz.osladil.blabot.api.BlabotDictionary;
 import cz.osladil.blabot.api.BlabotApi;
 import cz.osladil.blabot.api.BlabotApiException;
-import cz.osladil.blabot.beans.BlabotResponseResult;
+import java.util.List;
 
 /**
  *
@@ -20,23 +20,30 @@ public class Blabot {
         this.api = new BlabotApi(this.dictionary);
     }
 
-    public BlabotResponseResult getMessages(int count) throws BlabotApiException {
+    public String getMessage() throws BlabotApiException {
+        return getMessages(1);
+    }
+
+    public String getMessages(int count) throws BlabotApiException {
         try {
             return api
                 .setResultMethod(BlabotMethod.PARAGRAPH)
                 .setScount(count)
-                .getResult();
+                .getResult()
+                .getMessages()
+                .get(0);
         } catch (Exception ex) {
             throw new BlabotApiException(ex.getMessage());
         }
     }
-    
-    public BlabotResponseResult getMessagesAsList(int count) throws BlabotApiException {
+
+    public List<String> getMessagesAsList(int count) throws BlabotApiException {
         try {
             return api
                 .setResultMethod(BlabotMethod.LIST)
                 .setScount(count)
-                .getResult();
+                .getResult()
+                .getMessages();
         } catch (Exception ex) {
             throw new BlabotApiException(ex.getMessage());
         }
